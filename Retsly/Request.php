@@ -46,8 +46,12 @@ class Request {
       $op = "eq";
     }
     // shorthand operators
-    if ($op == "<") $op = "lt";
-    if ($op == ">") $op = "gt";
+    if ($op == "<")  $op = "lt";
+    if ($op == ">")  $op = "gt";
+    if ($op == "<=") $op = "lte";
+    if ($op == ">=") $op = "gte";
+    if ($op == "!=") $op = "ne";
+    if ($op == "=")  $op = "eq";
 
     return $this->query([$field => [$op => $value]]);
   }
