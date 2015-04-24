@@ -1,5 +1,7 @@
 <?php namespace Retsly;
 
+require_once(__DIR__.'/RetslyException.php');
+
 class Request {
 
   /**
@@ -105,8 +107,11 @@ class Request {
     $str = curl_exec($this->getCurlSession());
     // if no str, throw
     $res = json_decode($str, false);
-    // TODO if error
-    if (false == $res->success) return false;
+    // if error
+    if (true != $res->success) {
+      $msg = '['.$res->bundle->name.'] '. $res->bundle->message;
+      throw new RetslyException($msg);
+    }
     // TODO return an array-like Collection
     return $res->bundle;
   }
