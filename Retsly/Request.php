@@ -53,7 +53,8 @@ class Request {
     if ($op == "!=") $op = "ne";
     if ($op == "=")  $op = "eq";
 
-    return $this->query([$field => [$op => $value]]);
+    $q = ($op == "eq") ? [$field => $value] : [$field => [$op => $value]];
+    return $this->query($q);
   }
 
   /**

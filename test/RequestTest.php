@@ -27,6 +27,6 @@ class RequestTest extends PHPUnit_Framework_TestCase {
       ->where("bedrooms", 4);
 
     $this->assertEquals(["gte" => 1, "lt" => 6], $r->query["baths"]);
-    $this->assertEquals(["eq" => 4], $r->query["bedrooms"]);
+    $this->assertEquals(4, $r->query["bedrooms"]);
   }
 }
