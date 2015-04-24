@@ -1,0 +1,17 @@
+{
+  "name": "retsly/php-sdk",
+  "type": "library",
+  "description": "",
+  "homepage": "https://github.com/retsly/php-sdk",
+  "license": "MIT",
+  "scripts": {
+    "test": "phpunit test"
+  },
+  "require": {
+    "php": ">=5.4.0",
+    "ext-curl": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.6.*"
+  }
+}
