@@ -1,7 +1,7 @@
 
 # php-sdk
 
-Retsly PHP language SDK. Requires PHP@5.4 or newer and curl extension.
+[Retsly](https://rets.ly/) PHP language SDK. Requires PHP@5.4 or newer and curl extension.
 
 ## Install
 

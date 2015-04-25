@@ -2,7 +2,7 @@
   "name": "retsly/php-sdk",
   "version": "0.0.3",
   "type": "library",
-  "description": "",
+  "description": "Retsly PHP language SDK",
   "homepage": "https://github.com/retsly/php-sdk",
   "license": "MIT",
   "scripts": {
