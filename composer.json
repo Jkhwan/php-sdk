@@ -1,5 +1,6 @@
 {
   "name": "retsly/php-sdk",
+  "version": "0.0.2",
   "type": "library",
   "description": "",
   "homepage": "https://github.com/retsly/php-sdk",
