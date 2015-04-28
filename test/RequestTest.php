@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__."/../Retsly/Request.php");
+require_once(__DIR__."/../src/Retsly/Request.php");
 use Retsly\Request;
 
 class RequestTest extends PHPUnit_Framework_TestCase {

@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__."/../Retsly/Client.php");
+require_once(__DIR__."/../src/Retsly/Client.php");
 use Retsly\Request;
 use Retsly\Client;
 
