@@ -5,6 +5,12 @@ use Retsly\Request;
 use Retsly\Client;
 
 class ClientTest extends PHPUnit_Framework_TestCase {
+  function testBuilder() {
+    $c = Client::create("feep");
+    $this->assertTrue($c instanceof Client);
+    $this->assertEquals("test", $c->vendor);
+  }
+
   function testConstructor() {
     $c = new Client("bogus");
     $this->assertInternalType("string", $c->token);
@@ -19,7 +25,7 @@ class ClientTest extends PHPUnit_Framework_TestCase {
 
   function testGetRequest() {
     $c = new Client("bogus");
-    $r = $c->getRequest("GET", "http://google.com/", []);
+    $r = $c->getRequest("get", "http://google.com/", []);
     $this->assertInstanceOf("Retsly\Request", $r);
   }
 }

@@ -1,7 +1,5 @@
 <?php namespace Retsly;
 
-require_once(__DIR__.'/Request.php');
-
 class Client {
   const BASE_URL = "https://rets.io/api/v1";
 
@@ -9,7 +7,12 @@ class Client {
    * Retsly API client
    * @param string $token
    * @param string $vendor
+   * @return Retsly\Client
    */
+  static function create ($token, $vendor="test") {
+    return new Client($token, $vendor);
+  }
+
   function __construct ($token, $vendor="test") {
     $this->token = $token;
     $this->vendor = $vendor;
@@ -30,8 +33,7 @@ class Client {
    * @return \Retsly\Request
    */
   function listings ($query=[]) {
-    $url = $this->getURL("listing", $this->vendor);
-    return $this->getRequest("get", $url, $query);
+    return new ListingRequest($this, $query);
   }
 
   /**
@@ -40,8 +42,7 @@ class Client {
    * @return \Retsly\Request
    */
   function agents ($query=[]) {
-    $url = $this->getURL("agent", $this->vendor);
-    return $this->getRequest("get", $url, $query);
+    return new AgentRequest($this, $query);
   }
 
   /**
@@ -50,8 +51,7 @@ class Client {
    * @return \Retsly\Request
    */
   function offices ($query=[]) {
-    $url = $this->getURL("office", $this->vendor);
-    return $this->getRequest("get", $url, $query);
+    return new OfficeRequest($this, $query);
   }
 
   /**
@@ -60,8 +60,7 @@ class Client {
    * @return \Retsly\Request
    */
   function openHouses ($query=[]) {
-    $url = $this->getURL("openhouse", $this->vendor);
-    return $this->getRequest("get", $url, $query);
+    return new OpenHouseRequest($this, $query);
   }
 
   /**
@@ -72,11 +71,11 @@ class Client {
    * @return \Retsly\Request
    */
   function getRequest ($method, $url, $query) {
-    return new Request($method, $url, $query, $this->token);
+    return new Request($this, $method, $url, $query);
   }
 
-  private function getURL ($resource, $vendor, $id="") {
-    return self::BASE_URL . "/" . $resource . "/" . $vendor . "/" . $id;
+  function getURL ($resource) {
+    return self::BASE_URL . "/" . $resource . "/" . $this->vendor . "/";
   }
 
 }

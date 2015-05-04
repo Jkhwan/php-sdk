@@ -1,21 +1,18 @@
 <?php namespace Retsly;
 
-require_once(__DIR__.'/RetslyException.php');
-
 class Request {
-
   /**
    * A request to the Retsly API
+   * @param Retsly\Client $client
    * @param string $method
    * @param string $url
    * @param array $query
-   * @param string $token
    */
-  function __construct ($method, $url, $query=[], $token) {
+  function __construct (Client $client, $method, $url, $query=[]) {
     $this->method = $method;
-    $this->url = $url;
+    $this->client = $client;
     $this->query = $query;
-    $this->token = $token;
+    $this->url = $url;
   }
 
   /**
@@ -23,7 +20,7 @@ class Request {
    * @param array $query
    */
   function query (array $query) {
-    $this->query = array_merge_recursive($this->query, $query);
+    $this->query = array_replace_recursive($this->query, $query);
     return $this;
   }
 
@@ -76,6 +73,25 @@ class Request {
   }
 
   /**
+   * Increases offset by one page (limit)
+   */
+  function nextPage () {
+    $limit = intval($this->query["limit"]);
+    $offset = intval($this->query["offset"]);
+    return $this->offset($offset + $limit);
+  }
+
+  /**
+   * Decreases offset by one page (limit)
+   */
+  function prevPage () {
+    $limit = intval($this->query["limit"]);
+    $offset = intval($this->query["offset"]);
+    if ($offset < $limit) return $this;
+    return $this->offset($offset - $limit);
+  }
+
+  /**
    * Starts a GET request for a single document by $id
    * @param string $id
    * @return object
@@ -92,10 +108,34 @@ class Request {
    * @return array
    */
 
-  function getAll ($query = null) {
+  function getAll ($query=null) {
     $this->method = "get";
     if ($query) $this->query($query);
     return $this->end();
+  }
+
+  /**
+   * Alias for getAll
+   * @param array $query
+   * @return array
+   */
+
+  function findAll ($query=null) {
+    return $this->getAll($query);
+  }
+
+  /**
+   * Starts a GET request for a single document
+   * @param array $query
+   * @return array
+   */
+
+  function findOne ($query=[]) {
+    $query["limit"] = 1;
+    $query["offset"] = 0;
+    return $this
+      ->query($query)
+      ->end();
   }
 
   /**
@@ -109,6 +149,7 @@ class Request {
     $res = json_decode($str, false);
     // if error
     if (true != $res->success) {
+      var_dump($this);
       $msg = '['.$res->bundle->name.'] '. $res->bundle->message;
       throw new RetslyException($msg);
     }
@@ -120,7 +161,7 @@ class Request {
     return [
       strtoupper($this->method) . " " . $this->url . " HTTP/1.1",
       "Content-Type: application/json",
-      "Authorization: Bearer " . $this->token
+      "Authorization: Bearer " . $this->client->token
     ];
   }
 
